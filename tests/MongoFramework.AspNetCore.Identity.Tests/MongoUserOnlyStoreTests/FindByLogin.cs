@@ -64,7 +64,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new TestContext(GetConnection());
             var store = new TestStore(context);
 
-            var login = await store.ExposeFindUserLoginAsync(TestIds.UserId1, "provider2", "provider-key").ConfigureAwait(false);
+            var login = await store.ExposeFindUserLoginAsync(TestIds.UserId1, "provider2", "provider-key");
 
             login.Should().NotBeNull();
             login.UserId.Should().Be(TestIds.UserId1);
