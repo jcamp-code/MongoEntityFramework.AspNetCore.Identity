@@ -80,19 +80,21 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
         }
 
         [Fact]
-        public async Task ThrowsExceptionWithNullArguments()
+        public Task ThrowsExceptionWithNullArguments()
         {
             var context = new TestContext(GetConnection());
             var store = new TestStore(context);
 
-            await (async () =>
+            var act = () =>
             {
-                await store.ExposeFindUserRoleAsync(null, "rid1");
-            }).Should().ThrowAsync<ArgumentNullException>();
-            await (async () =>
+                var _ = store.ExposeFindUserRoleAsync(null, "rid1");
+            };
+            act.Should().Throw<ArgumentNullException>();
+            var act = () =>
             {
-                await store.ExposeFindUserRoleAsync("a1", null);
-            }).Should().ThrowAsync<ArgumentNullException>();
+                var _ = store.ExposeFindUserRoleAsync("a1", null);
+            };
+            act.Should().Throw<ArgumentNullException>();
         }
 
     }

@@ -63,15 +63,16 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
         }
 
         [Fact]
-        public async Task ThrowsExceptionWithNull()
+        public Task ThrowsExceptionWithNull()
         {
             var context = new TestContext(GetConnection());
             var store = new MongoUserStore<TestUser>(context);
 
-            await (async () =>
+            var act = () =>
             {
-                await store.FindByEmailAsync(null);
-            }).Should().ThrowAsync<ArgumentNullException>();
+                var _ = store.FindByEmailAsync(null);
+            };
+            act.Should().Throw<ArgumentNullException>();
         }
 
     }

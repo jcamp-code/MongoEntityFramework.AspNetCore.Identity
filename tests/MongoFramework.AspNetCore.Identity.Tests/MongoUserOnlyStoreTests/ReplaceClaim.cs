@@ -72,24 +72,27 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         }
 
         [Fact]
-        public async Task ThrowsExceptionWithNullArguments()
+        public Task ThrowsExceptionWithNullArguments()
         {
             var context = new TestContext(GetConnection());
             var store = new MongoUserOnlyStore<TestUser>(context);
-            var user = await store.FindByIdAsync("1000");
+            var user = new TestUser();
 
-            await (async () =>
+            var act = () =>
             {
-                await store.ReplaceClaimAsync(null, new Claim("type", "value"), new Claim("type", "value"));
-            }).Should().ThrowAsync<ArgumentNullException>();
-            await (async () =>
+                var _ = store.ReplaceClaimAsync(null, new Claim("type", "value"), new Claim("type", "value"));
+            };
+            act.Should().Throw<ArgumentNullException>();
+            var act1 = () =>
             {
-                await store.ReplaceClaimAsync(user, null, new Claim("type", "value"));
-            }).Should().ThrowAsync<ArgumentNullException>();
-            await (async () =>
+                var _ = store.ReplaceClaimAsync(user, null, new Claim("type", "value"));
+            };
+            act1.Should().Throw<ArgumentNullException>();
+            var act2 = () =>
             {
-                await store.ReplaceClaimAsync(user, new Claim("type", "value"), null);
-            }).Should().ThrowAsync<ArgumentNullException>();
+                var _ = store.ReplaceClaimAsync(user, new Claim("type", "value"), null);
+            };
+            act2.Should().Throw<ArgumentNullException>();
         }
 
     }
