@@ -1,0 +1,43 @@
+<Project>
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <Authors>John Campion</Authors>
+    <PackageBaseTags>mongodb;mongoframework;mongo;identity</PackageBaseTags>
+    <PackageIconUrl>https://raw.githubusercontent.com/jcamp-code/MongoEntityFramework.AspNetCore.Identity/main/assets/mongoidentity_logo_64x64.png</PackageIconUrl>
+    <PackageIcon>mongoidentity_logo_64x64.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/jcamp-code/MongoEntityFramework.AspNetCore.Identity</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jcamp-code/MongoEntityFramework.AspNetCore.Identity.git</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Version>0.0.0</Version>
+
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <DebugSymbols>true</DebugSymbols>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <IsPackable>true</IsPackable>
+
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors>true</WarningsAsErrors>
+
+    <CLSCompliant>true</CLSCompliant>
+    <ComVisible>false</ComVisible>
+
+    <AssetsDirectory>../../../assets</AssetsDirectory>
+
+    <LangVersion>latest</LangVersion>
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(AssetsDirectory)/mongoidentity_logo_64x64.png" Pack="true" Visible="false" PackagePath=""/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="all"/>
+  </ItemGroup>
+
+</Project>
