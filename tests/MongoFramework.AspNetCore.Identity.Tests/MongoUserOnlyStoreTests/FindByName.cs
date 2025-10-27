@@ -75,6 +75,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
                 var _ = store.FindByNameAsync(null);
             };
             act.Should().Throw<ArgumentNullException>();
+            return Task.CompletedTask;
         }
 
     }

@@ -98,6 +98,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
                 var _ = store.RemoveClaimsAsync(user, null);
             };
             act1.Should().Throw<ArgumentNullException>();
+            return Task.CompletedTask;
         }
 
     }

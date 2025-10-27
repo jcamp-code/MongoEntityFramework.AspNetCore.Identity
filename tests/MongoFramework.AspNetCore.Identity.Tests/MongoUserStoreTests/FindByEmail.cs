@@ -73,6 +73,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
                 var _ = store.FindByEmailAsync(null);
             };
             act.Should().Throw<ArgumentNullException>();
+            return Task.CompletedTask;
         }
 
     }

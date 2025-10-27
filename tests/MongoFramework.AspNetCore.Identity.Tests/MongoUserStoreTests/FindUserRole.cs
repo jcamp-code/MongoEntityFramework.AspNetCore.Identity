@@ -90,11 +90,12 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
                 var _ = store.ExposeFindUserRoleAsync(null, "rid1");
             };
             act.Should().Throw<ArgumentNullException>();
-            var act = () =>
+            var act1 = () =>
             {
                 var _ = store.ExposeFindUserRoleAsync("a1", null);
             };
-            act.Should().Throw<ArgumentNullException>();
+            act1.Should().Throw<ArgumentNullException>();
+            return Task.CompletedTask;
         }
 
     }

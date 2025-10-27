@@ -93,6 +93,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
                 var _ = store.ReplaceClaimAsync(user, new Claim("type", "value"), null);
             };
             act2.Should().Throw<ArgumentNullException>();
+            return Task.CompletedTask;
         }
 
     }
