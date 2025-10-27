@@ -58,23 +58,22 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         }
 
         [Fact]
-        public Task ThrowsExceptionWithNullArguments()
+        public async Task ThrowsExceptionWithNullArguments()
         {
             var context = new TestContext(GetConnection());
             var store = new MongoUserOnlyStore<TestUser>(context);
             var user = new TestUser();
 
-            var act = () =>
+            var act = async () =>
             {
-                var _ = store.AddLoginAsync(null, new UserLoginInfo("", "", ""));
+                await store.AddLoginAsync(null, new UserLoginInfo("", "", ""));
             };
-            act.Should().Throw<ArgumentNullException>();
-            var act1 = () =>
+            await act.Should().ThrowAsync<ArgumentNullException>();
+            var act1 = async () =>
             {
-                var _ = store.AddLoginAsync(user, null);
+                await store.AddLoginAsync(user, null);
             };
-            act1.Should().Throw<ArgumentNullException>();
-            return Task.CompletedTask;
+            await act1.Should().ThrowAsync<ArgumentNullException>();
         }
 
     }
