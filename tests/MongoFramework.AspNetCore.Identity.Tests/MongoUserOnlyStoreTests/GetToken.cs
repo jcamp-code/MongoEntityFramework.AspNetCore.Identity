@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using MongoEntityFramework.AspNetCore.Identity.Tests.TestClasses;
-using Shouldly;
+using AwesomeAssertions;
 using Xunit;
 
 namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
@@ -39,8 +39,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var token1 = await store.GetTokenAsync(user, "provider1", "name1", default);
             var token2 = await store.GetTokenAsync(user, "provider2", "name2", default);
 
-            token1.ShouldBe("token-value1");
-            token2.ShouldBe("token-value2");
+            token1.Should().Be("token-value1");
+            token2.Should().Be("token-value2");
         }
 
         [Fact]
@@ -49,10 +49,10 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new TestContext(GetConnection());
             var store = new MongoUserOnlyStore<TestUser>(context);
 
-            await Should.ThrowAsync<ArgumentNullException>(async () =>
+            await (async () =>
             {
                 await store.GetTokenAsync(null, "", "", default);
-            });
+            }).Should().ThrowAsync<ArgumentNullException>();
         }
 
     }

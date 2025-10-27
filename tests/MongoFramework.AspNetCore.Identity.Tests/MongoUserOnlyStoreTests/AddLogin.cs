@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using MongoEntityFramework.AspNetCore.Identity.Tests.TestClasses;
-using Shouldly;
+using AwesomeAssertions;
 using Xunit;
 
 namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
@@ -35,8 +35,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
             await store.AddLoginAsync(user, new UserLoginInfo("provider1", "provider-key", "Login Provider"));
 
-            user.Logins.Count.ShouldBe(1);
-            user.Logins[0].LoginProvider.ShouldBe("provider1");
+            user.Logins.Count.Should().Be(1);
+            user.Logins[0].LoginProvider.Should().Be("provider1");
         }
 
         [Fact]
@@ -53,8 +53,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             store = new MongoUserOnlyStore<TestUser>(context);
             user = await store.FindByIdAsync(TestIds.UserId1);
 
-            user.Logins.Count.ShouldBe(1);
-            user.Logins[0].LoginProvider.ShouldBe("provider1");
+            user.Logins.Count.Should().Be(1);
+            user.Logins[0].LoginProvider.Should().Be("provider1");
         }
 
         [Fact]
@@ -64,14 +64,14 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var store = new MongoUserOnlyStore<TestUser>(context);
             var user = await store.FindByIdAsync("1000");
 
-            await Should.ThrowAsync<ArgumentNullException>(async () =>
+            await (async () =>
             {
                 await store.AddLoginAsync(null, new UserLoginInfo("", "", ""));
-            });
-            await Should.ThrowAsync<ArgumentNullException>(async () =>
+            }).Should().ThrowAsync<ArgumentNullException>();
+            await (async () =>
             {
                 await store.AddLoginAsync(user, null);
-            });
+            }).Should().ThrowAsync<ArgumentNullException>();
         }
 
     }

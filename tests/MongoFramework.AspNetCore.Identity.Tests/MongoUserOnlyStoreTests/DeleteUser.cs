@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MongoEntityFramework.AspNetCore.Identity.Tests.TestClasses;
-using Shouldly;
+using AwesomeAssertions;
 using Xunit;
 
 namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
@@ -21,7 +21,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var store = new MongoUserOnlyStore<TestUser>(context);
             await store.CreateAsync(TestUser.First);
 
-            context.TestUsers.Any().ShouldBeTrue();
+            context.TestUsers.Any().Should().BeTrue();
 
             context = new TestContext(GetConnection());
             store = new MongoUserOnlyStore<TestUser>(context);
@@ -29,7 +29,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
             await store.DeleteAsync(user);
 
-            context.TestUsers.Any().ShouldBeFalse();
+            context.TestUsers.Any().Should().BeFalse();
         }
 
         [Fact]
@@ -39,7 +39,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var store = new MongoUserOnlyStore<TestUser>(context);
             await store.CreateAsync(TestUser.First);
 
-            context.TestUsers.Any().ShouldBeTrue();
+            context.TestUsers.Any().Should().BeTrue();
 
             context = new TestContext(GetConnection());
             store = new MongoUserOnlyStore<TestUser>(context);
@@ -47,7 +47,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
             var result = await store.DeleteAsync(user);
 
-            result.ShouldBe(IdentityResult.Success);
+            result.Should().Be(IdentityResult.Success);
         }
 
         [Fact]
@@ -56,10 +56,10 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new TestContext(GetConnection());
             var store = new MongoUserOnlyStore<TestUser>(context);
 
-            await Should.ThrowAsync<ArgumentNullException>(async () =>
+            await (async () =>
             {
                 await store.DeleteAsync(null);
-            });
+            }).Should().ThrowAsync<ArgumentNullException>();
         }
 
     }

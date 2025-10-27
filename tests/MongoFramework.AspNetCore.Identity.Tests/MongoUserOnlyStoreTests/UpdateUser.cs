@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using MongoEntityFramework.AspNetCore.Identity.Tests.TestClasses;
-using Shouldly;
+using AwesomeAssertions;
 using Xunit;
 
 namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
@@ -35,7 +35,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             user.CustomData = "new-data";
             var result = await store.UpdateAsync(user);
 
-            result.ShouldBe(IdentityResult.Success);
+            result.Should().Be(IdentityResult.Success);
         }
 
         [Fact]
@@ -49,7 +49,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             user.CustomData = "new-data";
             await store.UpdateAsync(user);
 
-            context.TestUsers.FirstOrDefault()?.CustomData.ShouldBe("new-data");
+            context.TestUsers.FirstOrDefault()?.CustomData.Should().Be("new-data");
         }
 
         [Fact]
@@ -58,10 +58,10 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new TestContext(GetConnection());
             var store = new MongoUserOnlyStore<TestUser>(context);
 
-            await Should.ThrowAsync<ArgumentNullException>(async () =>
+            await (async () =>
             {
                 await store.UpdateAsync(null);
-            });
+            }).Should().ThrowAsync<ArgumentNullException>();
         }
     }
 }

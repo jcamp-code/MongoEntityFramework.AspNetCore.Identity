@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using MongoEntityFramework.AspNetCore.Identity.Tests.TestClasses;
-using Shouldly;
+using AwesomeAssertions;
 using Xunit;
 
 namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
@@ -37,7 +37,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
             await store.RemoveLoginAsync(user, "provider1", "provider-key");
 
-            user.Logins.Count.ShouldBe(0);
+            user.Logins.Count.Should().Be(0);
         }
 
         [Fact]
@@ -54,7 +54,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             store = new MongoUserOnlyStore<TestUser>(context);
             user = await store.FindByIdAsync(TestIds.UserId1);
 
-            user.Logins.Count.ShouldBe(0);
+            user.Logins.Count.Should().Be(0);
         }
 
         [Fact]
@@ -63,10 +63,10 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new TestContext(GetConnection());
             var store = new MongoUserOnlyStore<TestUser>(context);
 
-            await Should.ThrowAsync<ArgumentNullException>(async () =>
+            await (async () =>
             {
                 await store.RemoveLoginAsync(null, "", "");
-            });
+            }).Should().ThrowAsync<ArgumentNullException>();
         }
 
     }

@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MongoEntityFramework.AspNetCore.Identity.Tests.TestClasses;
-using Shouldly;
+using AwesomeAssertions;
 using Xunit;
 
 namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
@@ -38,8 +38,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
             var result = await store.FindByIdAsync(TestIds.UserId2);
 
-            result.ShouldNotBeNull();
-            result.UserName.ShouldBe("User Name2");
+            result.Should().NotBeNull();
+            result.UserName.Should().Be("User Name2");
         }
 
         [Fact]
@@ -50,7 +50,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
             var result = await store.FindByIdAsync("none");
 
-            result.ShouldBeNull();
+            result.Should().BeNull();
         }
 
         [Fact]
@@ -61,8 +61,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
             var result = await store.FindByIdAsync("2000");
 
-            result.ShouldNotBeNull();
-            result.UserName.ShouldBe("User Name2");
+            result.Should().NotBeNull();
+            result.UserName.Should().Be("User Name2");
         }
 
         [Fact]
@@ -73,7 +73,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
             var result = await store.FindByIdAsync("1234");
 
-            result.ShouldBeNull();
+            result.Should().BeNull();
         }
 
         [Fact]
@@ -82,10 +82,10 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new TestContext(GetConnection());
             var store = new MongoUserOnlyStore<TestUser>(context);
 
-            await Should.ThrowAsync<ArgumentNullException>(async () =>
+            await (async () =>
             {
                 await store.FindByIdAsync(null);
-            });
+            }).Should().ThrowAsync<ArgumentNullException>();
         }
 
     }

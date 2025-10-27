@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using MongoEntityFramework.AspNetCore.Identity.Tests.TestClasses;
-using Shouldly;
+using AwesomeAssertions;
 using Xunit;
 
 namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
@@ -38,8 +38,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
                     new Claim("type2", "value2")
                 });
 
-            user.Claims.Count.ShouldBe(2);
-            user.Claims[0].ClaimType.ShouldBe("type");
+            user.Claims.Count.Should().Be(2);
+            user.Claims[0].ClaimType.Should().Be("type");
         }
 
         [Fact]
@@ -62,8 +62,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             store = new MongoUserOnlyStore<TestUser>(context);
             user = await store.FindByIdAsync(TestIds.UserId1);
 
-            user.Claims.Count.ShouldBe(2);
-            user.Claims[0].ClaimType.ShouldBe("type");
+            user.Claims.Count.Should().Be(2);
+            user.Claims[0].ClaimType.Should().Be("type");
         }
 
         [Fact]
@@ -73,14 +73,14 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var store = new MongoUserOnlyStore<TestUser>(context);
             var user = await store.FindByIdAsync("1000");
 
-            await Should.ThrowAsync<ArgumentNullException>(async () =>
+            await (async () =>
             {
                 await store.AddClaimsAsync(null, new[] { new Claim("type", "value") });
-            });
-            await Should.ThrowAsync<ArgumentNullException>(async () =>
+            }).Should().ThrowAsync<ArgumentNullException>();
+            await (async () =>
             {
                 await store.AddClaimsAsync(user, null);
-            });
+            }).Should().ThrowAsync<ArgumentNullException>();
         }
 
     }
