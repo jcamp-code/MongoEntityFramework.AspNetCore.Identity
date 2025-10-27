@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading;
@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MongoEntityFramework.AspNetCore.Identity.Tests.TestClasses;
-using Shouldly;
+using AwesomeAssertions;
 using Xunit;
 
 namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
@@ -53,9 +53,9 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
 
             var role = await store.ExposeFindUserRoleAsync(TestIds.UserId1, TestIds.RoleId1);
 
-            role.ShouldNotBeNull();
-            role.RoleId.ShouldBe(TestIds.RoleId1);
-            role.UserId.ShouldBe(TestIds.UserId1);        }
+            role.Should().NotBeNull();
+            role.RoleId.Should().Be(TestIds.RoleId1);
+            role.UserId.Should().Be(TestIds.UserId1);        }
 
         [Fact]
         public async Task FindUserRoleFailsWithInvalidRole()
@@ -65,7 +65,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
 
             var role = await store.ExposeFindUserRoleAsync("a1", "none-rid1");
 
-            role.ShouldBeNull();
+            role.Should().BeNull();
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
 
             var role = await store.ExposeFindUserRoleAsync("none-a1", "rid1");
 
-            role.ShouldBeNull();
+            role.Should().BeNull();
         }
 
         [Fact]
@@ -85,14 +85,16 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
             var context = new TestContext(GetConnection());
             var store = new TestStore(context);
 
-            await Should.ThrowAsync<ArgumentNullException>(async () =>
+            var act = async () =>
             {
                 await store.ExposeFindUserRoleAsync(null, "rid1");
-            });
-            await Should.ThrowAsync<ArgumentNullException>(async () =>
+            };
+            await act.Should().ThrowAsync<ArgumentNullException>();
+            var act1 = async () =>
             {
                 await store.ExposeFindUserRoleAsync("a1", null);
-            });
+            };
+            await act1.Should().ThrowAsync<ArgumentNullException>();
         }
 
     }

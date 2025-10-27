@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MongoEntityFramework.AspNetCore.Identity.Tests.TestClasses;
-using Shouldly;
+using AwesomeAssertions;
 using Xunit;
 
 namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
@@ -22,7 +22,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
             var result = await store.CreateAsync(TestUser.First);
 
-            result.ShouldBe(IdentityResult.Success);
+            result.Should().Be(IdentityResult.Success);
         }
 
         [Fact]
@@ -33,9 +33,9 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
             await store.CreateAsync(TestUser.First);
 
-            context.TestUsers.Any().ShouldBeTrue();
-            context.TestUsers.Count().ShouldBe(1);
-            context.TestUsers.FirstOrDefault()?.CustomData.ShouldBe("Some Info 1");
+            context.TestUsers.Any().Should().BeTrue();
+            context.TestUsers.Count().Should().Be(1);
+            context.TestUsers.FirstOrDefault()?.CustomData.Should().Be("Some Info 1");
         }
 
         [Fact]
@@ -48,8 +48,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
             await store.CreateAsync(TestUser.First);
 
-            context.TestUsers.Any().ShouldBeFalse();
-            context.TestUsers.Count().ShouldBe(0);
+            context.TestUsers.Any().Should().BeFalse();
+            context.TestUsers.Count().Should().Be(0);
         }
 
 
@@ -61,7 +61,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
             var result = await store.CreateAsync(TestUserInt.First);
 
-            result.ShouldBe(IdentityResult.Success);
+            result.Should().Be(IdentityResult.Success);
         }
 
         [Fact]
@@ -72,9 +72,9 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
             await store.CreateAsync(TestUserInt.First);
 
-            context.TestUsersInt.Any().ShouldBeTrue();
-            context.TestUsersInt.Count().ShouldBe(1);
-            context.TestUsersInt.FirstOrDefault()?.CustomData.ShouldBe("Some Info 1");
+            context.TestUsersInt.Any().Should().BeTrue();
+            context.TestUsersInt.Count().Should().Be(1);
+            context.TestUsersInt.FirstOrDefault()?.CustomData.Should().Be("Some Info 1");
         }
 
         [Fact]
@@ -83,10 +83,11 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new TestContext(GetConnection());
             var store = new MongoUserOnlyStore<TestUser>(context);
 
-            await Should.ThrowAsync<ArgumentNullException>(async () =>
+            var act = async () =>
             {
                 await store.CreateAsync(null);
-            });
+            };
+            await act.Should().ThrowAsync<ArgumentNullException>();
         }
 
     }

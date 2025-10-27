@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
-using Shouldly;
+using AwesomeAssertions;
 using Xunit;
 
 namespace MongoEntityFramework.AspNetCore.Identity.Tests
@@ -13,8 +13,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests
         {
             var role = new MongoIdentityRole();
 
-            role.Claims.ShouldNotBeNull();
-            role.Claims.Count.ShouldBe(0);
+            role.Claims.Should().NotBeNull();
+            role.Claims.Count.Should().Be(0);
         }
 
         [Fact]
@@ -22,18 +22,19 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests
         {
             var role = new MongoIdentityRole("role-name");
 
-            role.Name.ShouldBe("role-name");
-            role.NormalizedName.ShouldBe("ROLE-NAME");
-            role.ToString().ShouldBe("role-name");
+            role.Name.Should().Be("role-name");
+            role.NormalizedName.Should().Be("ROLE-NAME");
+            role.ToString().Should().Be("role-name");
         }
 
         [Fact]
         public void ConstructorThrowsExceptionWithNullUserName()
         {
-            Should.Throw<ArgumentNullException>(() =>
+            Action action = () =>
             {
                 _ = new MongoIdentityRole(null);
-            });
+            };
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [Fact]
@@ -41,7 +42,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests
         {
             var role = new MongoIdentityRole<int>();
 
-            role.Claims.ShouldBeOfType<List<IdentityRoleClaim<int>>>();
+            role.Claims.Should().BeOfType<List<IdentityRoleClaim<int>>>();
         }
 
         [Fact]
@@ -49,7 +50,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests
         {
             var role = new MongoIdentityRole<Guid>();
 
-            role.Claims.ShouldBeOfType<List<IdentityRoleClaim<Guid>>>();
+            role.Claims.Should().BeOfType<List<IdentityRoleClaim<Guid>>>();
         }
 
     }

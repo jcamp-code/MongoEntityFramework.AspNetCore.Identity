@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using MongoEntityFramework.AspNetCore.Identity.Tests.TestClasses;
-using Shouldly;
+using AwesomeAssertions;
 using Xunit;
 
 namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
@@ -43,8 +43,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
             var roles = await store.GetRolesAsync(user);
 
-            roles.Count.ShouldBe(2);
-            roles[0].ShouldBe("Role 1");
+            roles.Count.Should().Be(2);
+            roles[0].Should().Be("Role 1");
         }
 
         [Fact]
@@ -53,10 +53,11 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new TestContext(GetConnection());
             var store = new MongoUserStore<TestUser>(context);
 
-            await Should.ThrowAsync<ArgumentNullException>(async () =>
+            var act = async () =>
             {
                 await store.GetRolesAsync(null);
-            });
+            };
+            await act.Should().ThrowAsync<ArgumentNullException>();
         }
 
     }

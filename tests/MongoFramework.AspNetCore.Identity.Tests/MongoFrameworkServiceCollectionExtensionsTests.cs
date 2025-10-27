@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Shouldly;
+using AwesomeAssertions;
 using Xunit;
 
 namespace MongoFramework.AspNetCore.Identity.Tests
@@ -32,9 +32,9 @@ namespace MongoFramework.AspNetCore.Identity.Tests
             using (var scoped = provider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             using (var db = scoped.ServiceProvider.GetRequiredService<MongoIdentityDbContext>())
             {
-                db.ShouldBeOfType<MongoIdentityDbContext>();
-                db.Connection.ShouldNotBeNull();
-                db.Connection.GetDatabase().DatabaseNamespace.DatabaseName.ShouldBe("identity-test");
+                db.Should().BeOfType<MongoIdentityDbContext>();
+                db.Connection.Should().NotBeNull();
+                db.Connection.GetDatabase().DatabaseNamespace.DatabaseName.Should().Be("identity-test");
             }
 
         }
@@ -54,9 +54,9 @@ namespace MongoFramework.AspNetCore.Identity.Tests
             using (var scoped = provider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             using (var db = scoped.ServiceProvider.GetRequiredService<MongoIdentityDbContext>())
             {
-                db.ShouldBeOfType<MongoIdentityDbContext>();
-                db.Connection.ShouldNotBeNull();
-                db.Connection.GetDatabase().DatabaseNamespace.DatabaseName.ShouldBe("identity-test");
+                db.Should().BeOfType<MongoIdentityDbContext>();
+                db.Connection.Should().NotBeNull();
+                db.Connection.GetDatabase().DatabaseNamespace.DatabaseName.Should().Be("identity-test");
             }
         }
 
@@ -76,7 +76,7 @@ namespace MongoFramework.AspNetCore.Identity.Tests
             using (var scoped = provider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             using (var db = scoped.ServiceProvider.GetRequiredService<MongoIdentityDbContext>())
             {
-                db.Connection.DiagnosticListener.ShouldBeOfType<NoOpDiagnosticListener>();
+                db.Connection.DiagnosticListener.Should().BeOfType<NoOpDiagnosticListener>();
             }
         }
     }

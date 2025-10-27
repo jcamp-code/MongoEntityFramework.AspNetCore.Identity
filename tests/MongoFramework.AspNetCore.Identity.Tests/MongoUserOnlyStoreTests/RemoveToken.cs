@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using MongoEntityFramework.AspNetCore.Identity.Tests.TestClasses;
-using Shouldly;
+using AwesomeAssertions;
 using Xunit;
 
 namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
@@ -38,7 +38,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
             await store.RemoveTokenAsync(user, "provider2", "name2", default);
 
-            user.Tokens.Count.ShouldBe(1);
+            user.Tokens.Count.Should().Be(1);
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
             user = await store.FindByIdAsync(TestIds.UserId1);
 
-            user.Tokens.Count.ShouldBe(1);
+            user.Tokens.Count.Should().Be(1);
         }
 
         [Fact]
@@ -66,10 +66,11 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new TestContext(GetConnection());
             var store = new MongoUserOnlyStore<TestUser>(context);
 
-            await Should.ThrowAsync<ArgumentNullException>(async () =>
+            var act = async () =>
             {
                 await store.RemoveTokenAsync(null, "", "", default);
-            });
+            };
+            await act.Should().ThrowAsync<ArgumentNullException>();
         }
     }
 }

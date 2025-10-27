@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MongoEntityFramework.AspNetCore.Identity.Tests.TestClasses;
-using Shouldly;
+using AwesomeAssertions;
 using Xunit;
 
 namespace MongoEntityFramework.AspNetCore.Identity.Tests
@@ -39,7 +39,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests
 
             var store = new MongoRoleStore<MongoIdentityRole>(context);
 
-            store.Context.ShouldBeOfType<TestContext>();
+            store.Context.Should().BeOfType<TestContext>();
         }
 
         [Fact]
@@ -49,8 +49,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests
 
             var store = new MongoRoleStore<MongoIdentityRole<int>, DbContext, int>(context);
 
-            store.ConvertIdFromString(null).ShouldBe(0);
-            store.ConvertIdFromString("12345").ShouldBe(12345);
+            store.ConvertIdFromString(null).Should().Be(0);
+            store.ConvertIdFromString("12345").Should().Be(12345);
         }
 
         [Fact]
@@ -60,8 +60,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests
 
             var store = new MongoRoleStore<MongoIdentityRole<int>, DbContext, int>(context);
 
-            store.ConvertIdToString(0).ShouldBeNull();
-            store.ConvertIdToString(12345).ShouldBe("12345");
+            store.ConvertIdToString(0).Should().BeNull();
+            store.ConvertIdToString(12345).Should().Be("12345");
         }
 
         [Fact]
@@ -73,7 +73,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests
             var role = new MongoIdentityRole<int> { Name = "testrole", NormalizedName = "TESTROLE" };
             var name = await store.GetNormalizedRoleNameAsync(role);
 
-            name.ShouldBe("TESTROLE");
+            name.Should().Be("TESTROLE");
         }
 
     }

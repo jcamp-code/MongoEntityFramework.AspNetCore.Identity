@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Shouldly;
+using AwesomeAssertions;
 using Xunit;
 
 namespace MongoFramework.AspNetCore.Identity.Tests
@@ -36,8 +36,8 @@ namespace MongoFramework.AspNetCore.Identity.Tests
             using (var scoped = provider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             using (var db = scoped.ServiceProvider.GetRequiredService<IUserStore<MongoIdentityUser>>())
             {
-                db.GetType().GenericTypeArguments.Length.ShouldBe(9);
-                db.ShouldBeOfType<MongoUserStore<MongoIdentityUser, MongoIdentityRole, MongoIdentityDbContext, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IdentityUserToken<string>, IdentityRoleClaim<string>>>();
+                db.GetType().GenericTypeArguments.Length.Should().Be(9);
+                db.Should().BeOfType<MongoUserStore<MongoIdentityUser, MongoIdentityRole, MongoIdentityDbContext, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IdentityUserToken<string>, IdentityRoleClaim<string>>>();
             }
 
         }
@@ -64,8 +64,8 @@ namespace MongoFramework.AspNetCore.Identity.Tests
             using (var scoped = provider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             using (var db = scoped.ServiceProvider.GetRequiredService<IUserStore<MongoIdentityUser>>())
             {
-                db.GetType().GenericTypeArguments.Length.ShouldBe(6);
-                db.ShouldBeOfType<MongoUserOnlyStore<MongoIdentityUser, MongoIdentityDbContext, string, IdentityUserClaim<string>, IdentityUserLogin<string>, IdentityUserToken<string>>>();
+                db.GetType().GenericTypeArguments.Length.Should().Be(6);
+                db.Should().BeOfType<MongoUserOnlyStore<MongoIdentityUser, MongoIdentityDbContext, string, IdentityUserClaim<string>, IdentityUserLogin<string>, IdentityUserToken<string>>>();
             }
 
         }
@@ -94,8 +94,8 @@ namespace MongoFramework.AspNetCore.Identity.Tests
             using (var scoped = provider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             using (var db = scoped.ServiceProvider.GetRequiredService<IUserStore<MongoIdentityUser>>())
             {
-                db.GetType().GenericTypeArguments.Length.ShouldBe(4);
-                db.ShouldBeOfType<MongoUserStore<MongoIdentityUser, MongoIdentityRole, MongoDbContext, string>>();
+                db.GetType().GenericTypeArguments.Length.Should().Be(4);
+                db.Should().BeOfType<MongoUserStore<MongoIdentityUser, MongoIdentityRole, MongoDbContext, string>>();
             }
 
         }
@@ -122,8 +122,8 @@ namespace MongoFramework.AspNetCore.Identity.Tests
             using (var scoped = provider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             using (var db = scoped.ServiceProvider.GetRequiredService<IUserStore<MongoIdentityUser>>())
             {
-                db.GetType().GenericTypeArguments.Length.ShouldBe(3);
-                db.ShouldBeOfType<MongoUserOnlyStore<MongoIdentityUser, MongoDbContext, string>>();
+                db.GetType().GenericTypeArguments.Length.Should().Be(3);
+                db.Should().BeOfType<MongoUserOnlyStore<MongoIdentityUser, MongoDbContext, string>>();
             }
 
         }
@@ -141,12 +141,13 @@ namespace MongoFramework.AspNetCore.Identity.Tests
             services.AddTransient<MongoIdentityDbContext, MongoIdentityDbContext>();
 
 
-            Should.Throw<InvalidOperationException>(() =>
+            Action action = () =>
             {
                 services
                     .AddIdentity<MongoIdentityUser, IdentityRole>()
                     .AddMongoFrameworkStores<MongoIdentityDbContext>();
-            });
+            };
+            action.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -162,12 +163,13 @@ namespace MongoFramework.AspNetCore.Identity.Tests
             services.AddTransient<MongoIdentityDbContext, MongoIdentityDbContext>();
 
 
-            Should.Throw<InvalidOperationException>(() =>
+            Action action = () =>
             {
                 services
                     .AddIdentity<IdentityUser, MongoIdentityRole>()
                     .AddMongoFrameworkStores<MongoIdentityDbContext>();
-            });
+            };
+            action.Should().Throw<InvalidOperationException>();
         }
 
 

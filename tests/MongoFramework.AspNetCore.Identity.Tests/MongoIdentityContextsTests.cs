@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoEntityFramework.AspNetCore.Identity.Tests.TestClasses;
-using Shouldly;
+using AwesomeAssertions;
 using Xunit;
 
 namespace MongoEntityFramework.AspNetCore.Identity.Tests
@@ -49,8 +49,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests
 
             var store = new MongoRoleStore<MongoIdentityRole, MongoIdentityDbContext>(context);
 
-            store.Context.ShouldBeOfType<MongoIdentityDbContext>();
-            store.Roles.Count().ShouldBe(3);
+            store.Context.Should().BeOfType<MongoIdentityDbContext>();
+            store.Roles.Count().Should().Be(3);
         }
 
         [Fact]
@@ -60,8 +60,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests
 
             var store = new MongoUserOnlyStore<MongoIdentityUser, MongoIdentityUserContext>(context);
 
-            store.Context.ShouldBeOfType<MongoIdentityUserContext>();
-            store.Users.Count().ShouldBe(1);
+            store.Context.Should().BeOfType<MongoIdentityUserContext>();
+            store.Users.Count().Should().Be(1);
         }
 
     }

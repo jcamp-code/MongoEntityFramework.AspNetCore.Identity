@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using MongoEntityFramework.AspNetCore.Identity.Tests.TestClasses;
-using Shouldly;
+using AwesomeAssertions;
 using Xunit;
 
 namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
@@ -44,7 +44,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
             await store.RemoveClaimsAsync(user, claims);
 
-            user.Claims.Count.ShouldBe(0);
+            user.Claims.Count.Should().Be(0);
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
                 new Claim("type2", "value2")
             });
 
-            user.Claims.Count.ShouldBe(0);
+            user.Claims.Count.Should().Be(0);
         }
 
         [Fact]
@@ -78,7 +78,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             store = new MongoUserOnlyStore<TestUser>(context);
             user = await store.FindByIdAsync(TestIds.UserId1);
 
-            user.Claims.Count.ShouldBe(0);
+            user.Claims.Count.Should().Be(0);
         }
 
         [Fact]
@@ -86,16 +86,18 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         {
             var context = new TestContext(GetConnection());
             var store = new MongoUserOnlyStore<TestUser>(context);
-            var user = await store.FindByIdAsync("1000");
+            var user = new TestUser();
 
-            await Should.ThrowAsync<ArgumentNullException>(async () =>
+            var act = async () =>
             {
                 await store.RemoveClaimsAsync(null, new[] { new Claim("type", "value") });
-            });
-            await Should.ThrowAsync<ArgumentNullException>(async () =>
+            };
+            await act.Should().ThrowAsync<ArgumentNullException>();
+            var act1 = async () =>
             {
                 await store.RemoveClaimsAsync(user, null);
-            });
+            };
+            await act1.Should().ThrowAsync<ArgumentNullException>();
         }
 
     }

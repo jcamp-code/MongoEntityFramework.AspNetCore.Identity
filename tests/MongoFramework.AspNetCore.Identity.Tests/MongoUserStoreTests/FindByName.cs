@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using MongoEntityFramework.AspNetCore.Identity.Tests.TestClasses;
-using Shouldly;
+using AwesomeAssertions;
 using Xunit;
 
 namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
@@ -33,8 +33,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
 
             var result = await store.FindByNameAsync("USER NAME2");
 
-            result.ShouldNotBeNull();
-            result.UserName.ShouldBe("User Name2");
+            result.Should().NotBeNull();
+            result.UserName.Should().Be("User Name2");
         }
 
 
@@ -48,8 +48,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
 
             var result = await store.FindByNameAsync("USER NAME2");
 
-            result.ShouldBeSameAs(tracked);
-            result.CustomData.ShouldBe("updated");
+            result.Should().BeSameAs(tracked);
+            result.CustomData.Should().Be("updated");
         }
 
 
@@ -61,7 +61,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
 
             var result = await store.FindByNameAsync("none");
 
-            result.ShouldBeNull();
+            result.Should().BeNull();
         }
 
     }

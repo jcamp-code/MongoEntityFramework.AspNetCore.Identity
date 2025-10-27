@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MongoEntityFramework.AspNetCore.Identity.Tests.TestClasses;
-using Shouldly;
+using AwesomeAssertions;
 using Xunit;
 
 namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
@@ -54,8 +54,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
 
             var user = await store.FindByLoginAsync("provider3", "provider-key");
 
-            user.ShouldNotBeNull();
-            user.Id.ShouldBe(TestIds.UserId2);
+            user.Should().NotBeNull();
+            user.Id.Should().Be(TestIds.UserId2);
         }
 
         [Fact]
@@ -64,11 +64,11 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
             var context = new TestContext(GetConnection());
             var store = new TestStore(context);
 
-            var login = await store.ExposeFindUserLoginAsync(TestIds.UserId1, "provider2", "provider-key").ConfigureAwait(false);
+            var login = await store.ExposeFindUserLoginAsync(TestIds.UserId1, "provider2", "provider-key");
 
-            login.ShouldNotBeNull();
-            login.UserId.ShouldBe(TestIds.UserId1);
-            login.LoginProvider.ShouldBe("provider2");
+            login.Should().NotBeNull();
+            login.UserId.Should().Be(TestIds.UserId1);
+            login.LoginProvider.Should().Be("provider2");
         }
 
         [Fact]
@@ -79,7 +79,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
 
             var user = await store.FindByLoginAsync("provider5", "provider-key");
 
-            user.ShouldBeNull();
+            user.Should().BeNull();
         }
 
         [Fact]
@@ -90,7 +90,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
 
             var user = await store.FindByLoginAsync(null, "provider-key");
 
-            user.ShouldBeNull();
+            user.Should().BeNull();
         }
 
     }
