@@ -34,10 +34,10 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
-            var user = await store.FindByIdAsync(TestIds.UserId1);
+            var user = await store.FindByIdAsync(TestIds.UserId1, TestContext.Current.CancellationToken);
 
-            var token1 = await store.GetTokenAsync(user, "provider1", "name1", default);
-            var token2 = await store.GetTokenAsync(user, "provider2", "name2", default);
+            var token1 = await store.GetTokenAsync(user, "provider1", "name1", TestContext.Current.CancellationToken);
+            var token2 = await store.GetTokenAsync(user, "provider2", "name2", TestContext.Current.CancellationToken);
 
             token1.Should().Be("token-value1");
             token2.Should().Be("token-value2");

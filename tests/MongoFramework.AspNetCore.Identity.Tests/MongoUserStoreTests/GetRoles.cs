@@ -39,9 +39,9 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserStore<MongoTestUser>(context);
-            var user = await store.FindByIdAsync(TestIds.UserId1);
+            var user = await store.FindByIdAsync(TestIds.UserId1, TestContext.Current.CancellationToken);
 
-            var roles = await store.GetRolesAsync(user);
+            var roles = await store.GetRolesAsync(user, TestContext.Current.CancellationToken);
 
             roles.Count.Should().Be(2);
             roles[0].Should().Be("Role 1");

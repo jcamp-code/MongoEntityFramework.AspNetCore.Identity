@@ -20,7 +20,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
-            var result = await store.CreateAsync(MongoTestUser.First);
+            var result = await store.CreateAsync(MongoTestUser.First, TestContext.Current.CancellationToken);
 
             result.Should().Be(IdentityResult.Success);
         }
@@ -31,7 +31,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
-            await store.CreateAsync(MongoTestUser.First);
+            await store.CreateAsync(MongoTestUser.First, TestContext.Current.CancellationToken);
 
             context.TestUsers.Any().Should().BeTrue();
             context.TestUsers.Count().Should().Be(1);
@@ -46,7 +46,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
             store.AutoSaveChanges = false;
 
-            await store.CreateAsync(MongoTestUser.First);
+            await store.CreateAsync(MongoTestUser.First, TestContext.Current.CancellationToken);
 
             context.TestUsers.Any().Should().BeFalse();
             context.TestUsers.Count().Should().Be(0);
@@ -59,7 +59,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUserInt, DbContext, int>(context);
 
-            var result = await store.CreateAsync(MongoTestUserInt.First);
+            var result = await store.CreateAsync(MongoTestUserInt.First, TestContext.Current.CancellationToken);
 
             result.Should().Be(IdentityResult.Success);
         }
@@ -70,7 +70,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUserInt, DbContext, int>(context);
 
-            await store.CreateAsync(MongoTestUserInt.First);
+            await store.CreateAsync(MongoTestUserInt.First, TestContext.Current.CancellationToken);
 
             context.TestUsersInt.Any().Should().BeTrue();
             context.TestUsersInt.Count().Should().Be(1);

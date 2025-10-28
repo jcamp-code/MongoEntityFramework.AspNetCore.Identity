@@ -38,12 +38,12 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
-            var user = await store.FindByIdAsync(TestIds.UserId1);
+            var user = await store.FindByIdAsync(TestIds.UserId1, TestContext.Current.CancellationToken);
 
-            var claims = await store.GetClaimsAsync(user);
+            var claims = await store.GetClaimsAsync(user, TestContext.Current.CancellationToken);
             var claim = claims[0];
 
-            await store.ReplaceClaimAsync(user, claim, new Claim("new-type", "new-value"));
+            await store.ReplaceClaimAsync(user, claim, new Claim("new-type", "new-value"), TestContext.Current.CancellationToken);
 
             user.Claims[0].ClaimType.Should().Be("new-type");
             user.Claims[0].ClaimValue.Should().Be("new-value");
@@ -54,18 +54,18 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
-            var user = await store.FindByIdAsync(TestIds.UserId1);
+            var user = await store.FindByIdAsync(TestIds.UserId1, TestContext.Current.CancellationToken);
 
-            var claims = await store.GetClaimsAsync(user);
+            var claims = await store.GetClaimsAsync(user, TestContext.Current.CancellationToken);
             var claim = claims[0];
 
-            await store.ReplaceClaimAsync(user, claim, new Claim("new-type", "new-value"));
+            await store.ReplaceClaimAsync(user, claim, new Claim("new-type", "new-value"), TestContext.Current.CancellationToken);
 
-            await store.UpdateAsync(user);
+            await store.UpdateAsync(user, TestContext.Current.CancellationToken);
 
             context = new MongoTestContext(GetConnection());
             store = new MongoUserOnlyStore<MongoTestUser>(context);
-            user = await store.FindByIdAsync(TestIds.UserId1);
+            user = await store.FindByIdAsync(TestIds.UserId1, TestContext.Current.CancellationToken);
 
             user.Claims.Count.Should().Be(2);
             user.Claims[0].ClaimType.Should().Be("new-type");

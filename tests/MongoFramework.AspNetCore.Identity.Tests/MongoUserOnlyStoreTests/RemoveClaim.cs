@@ -38,11 +38,11 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
-            var user = await store.FindByIdAsync(TestIds.UserId1);
+            var user = await store.FindByIdAsync(TestIds.UserId1, TestContext.Current.CancellationToken);
 
-            var claims = await store.GetClaimsAsync(user);
+            var claims = await store.GetClaimsAsync(user, TestContext.Current.CancellationToken);
 
-            await store.RemoveClaimsAsync(user, claims);
+            await store.RemoveClaimsAsync(user, claims, TestContext.Current.CancellationToken);
 
             user.Claims.Count.Should().Be(0);
         }
@@ -52,12 +52,12 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
-            var user = await store.FindByIdAsync(TestIds.UserId1);
+            var user = await store.FindByIdAsync(TestIds.UserId1, TestContext.Current.CancellationToken);
 
             await store.RemoveClaimsAsync(user, new[] {
                 new Claim("type","value"),
                 new Claim("type2", "value2")
-            });
+            }, TestContext.Current.CancellationToken);
 
             user.Claims.Count.Should().Be(0);
         }
@@ -67,16 +67,16 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
-            var user = await store.FindByIdAsync(TestIds.UserId1);
+            var user = await store.FindByIdAsync(TestIds.UserId1, TestContext.Current.CancellationToken);
 
-            var claims = await store.GetClaimsAsync(user);
+            var claims = await store.GetClaimsAsync(user, TestContext.Current.CancellationToken);
 
-            await store.RemoveClaimsAsync(user, claims);
-            await store.UpdateAsync(user);
+            await store.RemoveClaimsAsync(user, claims, TestContext.Current.CancellationToken);
+            await store.UpdateAsync(user, TestContext.Current.CancellationToken);
 
             context = new MongoTestContext(GetConnection());
             store = new MongoUserOnlyStore<MongoTestUser>(context);
-            user = await store.FindByIdAsync(TestIds.UserId1);
+            user = await store.FindByIdAsync(TestIds.UserId1, TestContext.Current.CancellationToken);
 
             user.Claims.Count.Should().Be(0);
         }

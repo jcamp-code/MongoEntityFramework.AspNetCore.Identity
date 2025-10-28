@@ -84,32 +84,32 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
         {
             var store = new MongoUserStore(CreateContext());
             store.Dispose();
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.AddClaimsAsync(null, null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.AddLoginAsync(null, null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.AddToRoleAsync(null, null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.GetClaimsAsync(null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.GetLoginsAsync(null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.GetRolesAsync(null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.IsInRoleAsync(null, null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.RemoveClaimsAsync(null, null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.RemoveLoginAsync(null, null, null));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.AddClaimsAsync(null, null, TestContext.Current.CancellationToken));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.AddLoginAsync(null, null, TestContext.Current.CancellationToken));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.AddToRoleAsync(null, null, TestContext.Current.CancellationToken));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.GetClaimsAsync(null, TestContext.Current.CancellationToken));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.GetLoginsAsync(null, TestContext.Current.CancellationToken));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.GetRolesAsync(null, TestContext.Current.CancellationToken));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.IsInRoleAsync(null, null, TestContext.Current.CancellationToken));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.RemoveClaimsAsync(null, null, TestContext.Current.CancellationToken));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.RemoveLoginAsync(null, null, null, TestContext.Current.CancellationToken));
             await Assert.ThrowsAsync<ObjectDisposedException>(
-                async () => await store.RemoveFromRoleAsync(null, null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.RemoveClaimsAsync(null, null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.ReplaceClaimAsync(null, null, null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.FindByLoginAsync(null, null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.FindByIdAsync(null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.FindByNameAsync(null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.CreateAsync(null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.UpdateAsync(null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.DeleteAsync(null));
+                async () => await store.RemoveFromRoleAsync(null, null, TestContext.Current.CancellationToken));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.RemoveClaimsAsync(null, null, TestContext.Current.CancellationToken));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.ReplaceClaimAsync(null, null, null, TestContext.Current.CancellationToken));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.FindByLoginAsync(null, null, TestContext.Current.CancellationToken));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.FindByIdAsync(null, TestContext.Current.CancellationToken));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.FindByNameAsync(null, TestContext.Current.CancellationToken));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.CreateAsync(null, TestContext.Current.CancellationToken));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.UpdateAsync(null, TestContext.Current.CancellationToken));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.DeleteAsync(null, TestContext.Current.CancellationToken));
             await Assert.ThrowsAsync<ObjectDisposedException>(
-                async () => await store.SetEmailConfirmedAsync(null, true));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.GetEmailConfirmedAsync(null));
+                async () => await store.SetEmailConfirmedAsync(null, true, TestContext.Current.CancellationToken));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.GetEmailConfirmedAsync(null, TestContext.Current.CancellationToken));
             await Assert.ThrowsAsync<ObjectDisposedException>(
-                async () => await store.SetPhoneNumberConfirmedAsync(null, true));
+                async () => await store.SetPhoneNumberConfirmedAsync(null, true, TestContext.Current.CancellationToken));
             await Assert.ThrowsAsync<ObjectDisposedException>(
-                async () => await store.GetPhoneNumberConfirmedAsync(null));
+                async () => await store.GetPhoneNumberConfirmedAsync(null, TestContext.Current.CancellationToken));
         }
 
         [Fact]

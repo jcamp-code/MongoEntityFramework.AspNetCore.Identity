@@ -71,7 +71,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests
             var store = new MongoRoleStore<MongoIdentityRole<int>, DbContext, int>(context);
 
             var role = new MongoIdentityRole<int> { Name = "testrole", NormalizedName = "TESTROLE" };
-            var name = await store.GetNormalizedRoleNameAsync(role);
+            var name = await store.GetNormalizedRoleNameAsync(role, TestContext.Current.CancellationToken);
 
             name.Should().Be("TESTROLE");
         }

@@ -34,9 +34,9 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
-            var user = await store.FindByIdAsync(TestIds.UserId1);
+            var user = await store.FindByIdAsync(TestIds.UserId1, TestContext.Current.CancellationToken);
 
-            var logins = await store.GetLoginsAsync(user);
+            var logins = await store.GetLoginsAsync(user, TestContext.Current.CancellationToken);
 
             logins.Count.Should().Be(2);
             logins[0].LoginProvider.Should().Be("provider1");

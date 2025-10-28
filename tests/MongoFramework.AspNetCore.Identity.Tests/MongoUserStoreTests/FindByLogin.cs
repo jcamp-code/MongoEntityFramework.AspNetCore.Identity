@@ -52,7 +52,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserStore<MongoTestUser>(context);
 
-            var user = await store.FindByLoginAsync("provider3", "provider-key");
+            var user = await store.FindByLoginAsync("provider3", "provider-key", TestContext.Current.CancellationToken);
 
             user.Should().NotBeNull();
             user.Id.Should().Be(TestIds.UserId2);
@@ -77,7 +77,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserStore<MongoTestUser>(context);
 
-            var user = await store.FindByLoginAsync("provider5", "provider-key");
+            var user = await store.FindByLoginAsync("provider5", "provider-key", TestContext.Current.CancellationToken);
 
             user.Should().BeNull();
         }
@@ -88,7 +88,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserStore<MongoTestUser>(context);
 
-            var user = await store.FindByLoginAsync(null, "provider-key");
+            var user = await store.FindByLoginAsync(null, "provider-key", TestContext.Current.CancellationToken);
 
             user.Should().BeNull();
         }

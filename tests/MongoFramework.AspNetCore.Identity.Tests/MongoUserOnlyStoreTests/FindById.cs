@@ -36,7 +36,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
-            var result = await store.FindByIdAsync(TestIds.UserId2);
+            var result = await store.FindByIdAsync(TestIds.UserId2, TestContext.Current.CancellationToken);
 
             result.Should().NotBeNull();
             result.UserName.Should().Be("User Name2");
@@ -48,7 +48,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
-            var result = await store.FindByIdAsync("none");
+            var result = await store.FindByIdAsync("none", TestContext.Current.CancellationToken);
 
             result.Should().BeNull();
         }
@@ -59,7 +59,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUserInt, DbContext, int>(context);
 
-            var result = await store.FindByIdAsync("2000");
+            var result = await store.FindByIdAsync("2000", TestContext.Current.CancellationToken);
 
             result.Should().NotBeNull();
             result.UserName.Should().Be("User Name2");
@@ -71,7 +71,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUserInt, DbContext, int>(context);
 
-            var result = await store.FindByIdAsync("1234");
+            var result = await store.FindByIdAsync("1234", TestContext.Current.CancellationToken);
 
             result.Should().BeNull();
         }

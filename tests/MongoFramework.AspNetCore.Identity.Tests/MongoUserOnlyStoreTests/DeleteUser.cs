@@ -19,15 +19,15 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
-            await store.CreateAsync(MongoTestUser.First);
+            await store.CreateAsync(MongoTestUser.First, TestContext.Current.CancellationToken);
 
             context.TestUsers.Any().Should().BeTrue();
 
             context = new MongoTestContext(GetConnection());
             store = new MongoUserOnlyStore<MongoTestUser>(context);
-            var user = await context.TestUsers.FirstOrDefaultAsync();
+            var user = await context.TestUsers.FirstOrDefaultAsync(TestContext.Current.CancellationToken);
 
-            await store.DeleteAsync(user);
+            await store.DeleteAsync(user, TestContext.Current.CancellationToken);
 
             context.TestUsers.Any().Should().BeFalse();
         }
@@ -37,15 +37,15 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
-            await store.CreateAsync(MongoTestUser.First);
+            await store.CreateAsync(MongoTestUser.First, TestContext.Current.CancellationToken);
 
             context.TestUsers.Any().Should().BeTrue();
 
             context = new MongoTestContext(GetConnection());
             store = new MongoUserOnlyStore<MongoTestUser>(context);
-            var user = await context.TestUsers.FirstOrDefaultAsync();
+            var user = await context.TestUsers.FirstOrDefaultAsync(TestContext.Current.CancellationToken);
 
-            var result = await store.DeleteAsync(user);
+            var result = await store.DeleteAsync(user, TestContext.Current.CancellationToken);
 
             result.Should().Be(IdentityResult.Success);
         }
