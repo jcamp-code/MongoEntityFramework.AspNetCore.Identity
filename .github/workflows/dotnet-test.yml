@@ -36,4 +36,4 @@ jobs:
         run: dotnet build --no-restore -c Release
 
       - name: Test ✅
-        run: dotnet test --verbosity normal
+        run: dotnet test --no-restore --no-build --verbosity normal
