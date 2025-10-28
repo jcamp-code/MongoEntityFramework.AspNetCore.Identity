@@ -1,30 +1,32 @@
-﻿namespace MongoEntityFramework.AspNetCore.Identity.Tests.TestClasses
+﻿using MongoDB.Bson;
+
+namespace MongoEntityFramework.AspNetCore.Identity.Tests.TestClasses
 {
-    public class TestUserInt : MongoIdentityUser<int>
+    public class MongoTestUser : MongoIdentityUser
     {
         public string CustomData { get; set; }
 
-        public static TestUserInt First => new TestUserInt
+        public static MongoTestUser First => new MongoTestUser
         {
-            Id = 1000,
+            Id = TestIds.UserId1,
             Email = "test1@testing.com",
             UserName = "User Name1",
             CustomData = "Some Info 1",
             NormalizedEmail = "TEST1@TESTING.COM",
             NormalizedUserName = "USER NAME1"
         };
-        public static TestUserInt Second => new TestUserInt
+        public static MongoTestUser Second => new MongoTestUser
         {
-            Id = 2000,
+            Id = TestIds.UserId2,
             Email = "test2@testing.com",
             UserName = "User Name2",
             CustomData = "Some Info 2",
             NormalizedEmail = "TEST2@TESTING.COM",
             NormalizedUserName = "USER NAME2"
         };
-        public static TestUserInt Third => new TestUserInt
+        public static MongoTestUser Third => new MongoTestUser
         {
-            Id = 3000,
+            Id = TestIds.UserId3,
             Email = "test3@testing.com",
             UserName = "User Name3",
             CustomData = "Some Info 3",

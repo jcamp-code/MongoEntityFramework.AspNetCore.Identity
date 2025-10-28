@@ -17,10 +17,10 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         [Fact]
         public async Task ReturnsSuccessWithStringId()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserOnlyStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
-            var result = await store.CreateAsync(TestUser.First);
+            var result = await store.CreateAsync(MongoTestUser.First);
 
             result.Should().Be(IdentityResult.Success);
         }
@@ -28,10 +28,10 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         [Fact]
         public async Task CreatesDataWithStringId()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserOnlyStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
-            await store.CreateAsync(TestUser.First);
+            await store.CreateAsync(MongoTestUser.First);
 
             context.TestUsers.Any().Should().BeTrue();
             context.TestUsers.Count().Should().Be(1);
@@ -41,12 +41,12 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         [Fact]
         public async Task DoesNotCreatesDataWithAutoSaveOff()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserOnlyStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
             store.AutoSaveChanges = false;
 
-            await store.CreateAsync(TestUser.First);
+            await store.CreateAsync(MongoTestUser.First);
 
             context.TestUsers.Any().Should().BeFalse();
             context.TestUsers.Count().Should().Be(0);
@@ -56,10 +56,10 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         [Fact]
         public async Task ReturnsSuccessWithIntId()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserOnlyStore<TestUserInt, DbContext, int>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserOnlyStore<MongoTestUserInt, DbContext, int>(context);
 
-            var result = await store.CreateAsync(TestUserInt.First);
+            var result = await store.CreateAsync(MongoTestUserInt.First);
 
             result.Should().Be(IdentityResult.Success);
         }
@@ -67,10 +67,10 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         [Fact]
         public async Task CreatesDataWithIntId()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserOnlyStore<TestUserInt, DbContext, int>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserOnlyStore<MongoTestUserInt, DbContext, int>(context);
 
-            await store.CreateAsync(TestUserInt.First);
+            await store.CreateAsync(MongoTestUserInt.First);
 
             context.TestUsersInt.Any().Should().BeTrue();
             context.TestUsersInt.Count().Should().Be(1);
@@ -80,8 +80,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         [Fact]
         public async Task ThrowsExceptionWithNull()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserOnlyStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
             var act = async () =>
             {

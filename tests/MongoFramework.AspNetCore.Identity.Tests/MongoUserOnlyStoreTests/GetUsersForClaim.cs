@@ -16,10 +16,10 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
         public async Task InitializeAsync()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserOnlyStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
-            var user = TestUser.First;
+            var user = MongoTestUser.First;
             await store.CreateAsync(user);
             await store.AddClaimsAsync(user,
                 new[]
@@ -28,7 +28,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
                     new Claim("type2", "value2")
                 });
             await store.UpdateAsync(user);
-            user = TestUser.Second;
+            user = MongoTestUser.Second;
             await store.CreateAsync(user);
             await store.AddClaimsAsync(user,
                 new[]
@@ -37,7 +37,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
                     new Claim("type2", "value2")
                 });
             await store.UpdateAsync(user);
-            user = TestUser.Third;
+            user = MongoTestUser.Third;
             await store.CreateAsync(user);
             await store.AddClaimsAsync(user,
                 new[]
@@ -54,8 +54,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         [Fact]
         public async Task RetrieveUsersForClaim()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserOnlyStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
             var users = await store.GetUsersForClaimAsync(new Claim("type", "value"));
             var users2 = await store.GetUsersForClaimAsync(new Claim("type2", "value2"));
@@ -68,8 +68,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         [Fact]
         public async Task ThrowsExceptionWithNullArguments()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserOnlyStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
             var act = async () =>
             {

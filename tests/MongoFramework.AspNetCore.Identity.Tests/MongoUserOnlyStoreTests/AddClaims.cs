@@ -16,10 +16,10 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
         public async Task InitializeAsync()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserOnlyStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
-            await store.CreateAsync(TestUser.First);
+            await store.CreateAsync(MongoTestUser.First);
         }
 
         public Task DisposeAsync() => Task.CompletedTask;
@@ -27,8 +27,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         [Fact]
         public async Task UpdatesUser()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserOnlyStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserOnlyStore<MongoTestUser>(context);
             var user = await store.FindByIdAsync(TestIds.UserId1);
 
             await store.AddClaimsAsync(user,
@@ -45,8 +45,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         [Fact]
         public async Task SavesData()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserOnlyStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserOnlyStore<MongoTestUser>(context);
             var user = await store.FindByIdAsync(TestIds.UserId1);
 
             await store.AddClaimsAsync(user,
@@ -58,8 +58,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
             await store.UpdateAsync(user);
 
-            context = new TestContext(GetConnection());
-            store = new MongoUserOnlyStore<TestUser>(context);
+            context = new MongoTestContext(GetConnection());
+            store = new MongoUserOnlyStore<MongoTestUser>(context);
             user = await store.FindByIdAsync(TestIds.UserId1);
 
             user.Claims.Count.Should().Be(2);
@@ -69,9 +69,9 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         [Fact]
         public async Task ThrowsExceptionWithNullArguments()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserOnlyStore<TestUser>(context);
-            var user = new TestUser();
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserOnlyStore<MongoTestUser>(context);
+            var user = new MongoTestUser();
 
             var act = async () =>
             {

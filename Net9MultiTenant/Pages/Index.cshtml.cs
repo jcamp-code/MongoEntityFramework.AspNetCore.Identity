@@ -6,7 +6,7 @@ using Net9MultiTenant.Models;
 
 namespace Net9MultiTenant.Pages
 {
-    public class IndexModel(ILogger<IndexModel> logger, ApplicationDbContext dbContext) : PageModel
+    public class IndexModel(ApplicationDbContext dbContext) : PageModel
     {
         public TenantInfo? TenantInfo { get; private set; }
         public IEnumerable<ToDoItem>? ToDoItems { get; private set; } = new List<ToDoItem>();

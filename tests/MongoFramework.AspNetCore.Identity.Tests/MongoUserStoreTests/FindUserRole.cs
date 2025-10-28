@@ -13,7 +13,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
 {
     public class FindUserRole : TestBase, IAsyncLifetime
     {
-        private class TestStore : MongoUserStore<TestUser>
+        private class TestStore : MongoUserStore<MongoTestUser>
         {
             public TestStore(DbContext context, IdentityErrorDescriber describer = null) : base(context, describer) { }
 
@@ -27,8 +27,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
 
         public async Task InitializeAsync()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserStore<MongoTestUser>(context);
 
             context.Roles.Add(new MongoIdentityRole { Id = TestIds.RoleId1, Name = "Role 1" });
             context.Roles.Add(new MongoIdentityRole { Id = TestIds.RoleId2, Name = "Role 2" });
@@ -36,7 +36,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
 
             await context.SaveChangesAsync();
 
-            var user = TestUser.First;
+            var user = MongoTestUser.First;
             user.Roles.Add(TestIds.RoleId1);
             user.Roles.Add(TestIds.RoleId2);
             await store.CreateAsync(user);
@@ -48,7 +48,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
         [Fact]
         public async Task FindUserRoleWithValidRole()
         {
-            var context = new TestContext(GetConnection());
+            var context = new MongoTestContext(GetConnection());
             var store = new TestStore(context);
 
             var role = await store.ExposeFindUserRoleAsync(TestIds.UserId1, TestIds.RoleId1);
@@ -60,7 +60,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
         [Fact]
         public async Task FindUserRoleFailsWithInvalidRole()
         {
-            var context = new TestContext(GetConnection());
+            var context = new MongoTestContext(GetConnection());
             var store = new TestStore(context);
 
             var role = await store.ExposeFindUserRoleAsync("a1", "none-rid1");
@@ -71,7 +71,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
         [Fact]
         public async Task FindUserRoleFailsWithInvaliUser()
         {
-            var context = new TestContext(GetConnection());
+            var context = new MongoTestContext(GetConnection());
             var store = new TestStore(context);
 
             var role = await store.ExposeFindUserRoleAsync("none-a1", "rid1");
@@ -82,7 +82,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
         [Fact]
         public async Task ThrowsExceptionWithNullArguments()
         {
-            var context = new TestContext(GetConnection());
+            var context = new MongoTestContext(GetConnection());
             var store = new TestStore(context);
 
             var act = async () =>

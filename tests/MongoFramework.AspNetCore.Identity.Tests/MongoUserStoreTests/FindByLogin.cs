@@ -13,7 +13,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
     public class FindByLogin : TestBase, IAsyncLifetime
     {
 
-        private class TestStore : MongoUserStore<TestUser>
+        private class TestStore : MongoUserStore<MongoTestUser>
         {
             public TestStore(DbContext context, IdentityErrorDescriber describer = null) : base(context, describer) { }
 
@@ -27,16 +27,16 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
 
         public async Task InitializeAsync()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserStore<MongoTestUser>(context);
 
-            var user = TestUser.First;
+            var user = MongoTestUser.First;
             await store.CreateAsync(user);
             await store.AddLoginAsync(user, new UserLoginInfo("provider1", "provider-key", "Login Provider"));
             await store.AddLoginAsync(user, new UserLoginInfo("provider2", "provider-key", "Login Provider"));
             await store.UpdateAsync(user);
 
-            var user2 = TestUser.Second;
+            var user2 = MongoTestUser.Second;
             await store.CreateAsync(user2);
             await store.AddLoginAsync(user2, new UserLoginInfo("provider3", "provider-key", "Login Provider"));
             await store.AddLoginAsync(user2, new UserLoginInfo("provider4", "provider-key", "Login Provider"));
@@ -49,8 +49,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
         [Fact]
         public async Task GetsCorrectUserFromLogin()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserStore<MongoTestUser>(context);
 
             var user = await store.FindByLoginAsync("provider3", "provider-key");
 
@@ -61,7 +61,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
         [Fact]
         public async Task GetsLoginWithUserIdAndProvider()
         {
-            var context = new TestContext(GetConnection());
+            var context = new MongoTestContext(GetConnection());
             var store = new TestStore(context);
 
             var login = await store.ExposeFindUserLoginAsync(TestIds.UserId1, "provider2", "provider-key");
@@ -74,8 +74,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
         [Fact]
         public async Task ReturnsNullFromNonExisting()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserStore<MongoTestUser>(context);
 
             var user = await store.FindByLoginAsync("provider5", "provider-key");
 
@@ -85,8 +85,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
         [Fact]
         public async Task ReturnsNullFromNull()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserStore<MongoTestUser>(context);
 
             var user = await store.FindByLoginAsync(null, "provider-key");
 

@@ -17,14 +17,14 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         [Fact]
         public async Task DeletesDataWithValidUser()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserOnlyStore<TestUser>(context);
-            await store.CreateAsync(TestUser.First);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserOnlyStore<MongoTestUser>(context);
+            await store.CreateAsync(MongoTestUser.First);
 
             context.TestUsers.Any().Should().BeTrue();
 
-            context = new TestContext(GetConnection());
-            store = new MongoUserOnlyStore<TestUser>(context);
+            context = new MongoTestContext(GetConnection());
+            store = new MongoUserOnlyStore<MongoTestUser>(context);
             var user = await context.TestUsers.FirstOrDefaultAsync();
 
             await store.DeleteAsync(user);
@@ -35,14 +35,14 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         [Fact]
         public async Task ReturnsSuccessWithValidUser()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserOnlyStore<TestUser>(context);
-            await store.CreateAsync(TestUser.First);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserOnlyStore<MongoTestUser>(context);
+            await store.CreateAsync(MongoTestUser.First);
 
             context.TestUsers.Any().Should().BeTrue();
 
-            context = new TestContext(GetConnection());
-            store = new MongoUserOnlyStore<TestUser>(context);
+            context = new MongoTestContext(GetConnection());
+            store = new MongoUserOnlyStore<MongoTestUser>(context);
             var user = await context.TestUsers.FirstOrDefaultAsync();
 
             var result = await store.DeleteAsync(user);
@@ -53,8 +53,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         [Fact]
         public async Task ThrowsExceptionWithNull()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserOnlyStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
             var act = async () =>
             {

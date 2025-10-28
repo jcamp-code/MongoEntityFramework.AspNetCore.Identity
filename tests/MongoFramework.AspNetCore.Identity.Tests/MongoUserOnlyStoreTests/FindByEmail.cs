@@ -15,12 +15,12 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
         public async Task InitializeAsync()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserOnlyStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
-            await store.CreateAsync(TestUser.First);
-            await store.CreateAsync(TestUser.Second);
-            await store.CreateAsync(TestUser.Third);
+            await store.CreateAsync(MongoTestUser.First);
+            await store.CreateAsync(MongoTestUser.Second);
+            await store.CreateAsync(MongoTestUser.Third);
         }
 
         public Task DisposeAsync() => Task.CompletedTask;
@@ -28,8 +28,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         [Fact]
         public async Task FindsCorrectUserWithValidEmail()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserOnlyStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
             var result = await store.FindByEmailAsync("TEST3@TESTING.COM");
 
@@ -40,8 +40,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         [Fact]
         public async Task FindsTrackedEntityWithValidEmail()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserOnlyStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserOnlyStore<MongoTestUser>(context);
             var tracked = await store.FindByIdAsync(TestIds.UserId2);
             tracked.CustomData = "updated";
 
@@ -54,8 +54,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         [Fact]
         public async Task ReturnsNullWithInvalidEmail()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserOnlyStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
             var result = await store.FindByEmailAsync("none");
 

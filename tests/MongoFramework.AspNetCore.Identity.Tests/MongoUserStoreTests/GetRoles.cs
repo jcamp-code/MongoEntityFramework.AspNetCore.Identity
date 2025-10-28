@@ -16,8 +16,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
         public async Task InitializeAsync()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserStore<MongoTestUser>(context);
 
             context.Roles.Add(new MongoIdentityRole { Id = "rid1", Name = "Role 1" });
             context.Roles.Add(new MongoIdentityRole { Id = "rid2", Name = "Role 2" });
@@ -25,7 +25,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
             await context.SaveChangesAsync();
 
-            var user = TestUser.First;
+            var user = MongoTestUser.First;
             user.Roles.Add("rid1");
             user.Roles.Add("rid2");
             await store.CreateAsync(user);
@@ -37,8 +37,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         [Fact]
         public async Task GetRolesWithUser()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserStore<MongoTestUser>(context);
             var user = await store.FindByIdAsync(TestIds.UserId1);
 
             var roles = await store.GetRolesAsync(user);
@@ -50,8 +50,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         [Fact]
         public async Task ThrowsExceptionWithNullArguments()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserStore<MongoTestUser>(context);
 
             var act = async () =>
             {

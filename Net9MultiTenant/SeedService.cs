@@ -36,7 +36,8 @@ public static class SeedService
     private static async Task SetupDb(ApplicationDbContext context, IMultiTenantStore<TenantInfo> store, IConfiguration config, IServiceProvider serviceProvider)
     {
         var ti = await store.TryGetByIdentifierAsync("acme");
-        
+        if (ti == null) return; 
+
         using var db1 = MultiTenantDbContext.Create<ApplicationDbContext, TenantInfo>(ti, serviceProvider);
 
         if (!db1.ToDoItems.Any())
@@ -48,6 +49,7 @@ public static class SeedService
         }
 
         ti = store.TryGetByIdentifierAsync("megacorp").Result;
+        if (ti == null) return;
         using var db2 = MultiTenantDbContext.Create<ApplicationDbContext, TenantInfo>(ti, serviceProvider);
         if (!db2.ToDoItems.Any())
         {
@@ -58,6 +60,7 @@ public static class SeedService
         }
 
         ti = store.TryGetByIdentifierAsync("initech").Result;
+        if (ti == null) return;
         using var db3 = MultiTenantDbContext.Create<ApplicationDbContext, TenantInfo>(ti, serviceProvider);
         if (!db3.ToDoItems.Any())
         {

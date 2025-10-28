@@ -14,8 +14,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests
 
         public async Task InitializeAsync()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserStore<MongoTestUser>(context);
 
             context.Roles.Add(new MongoIdentityRole { Id = "rid1", Name = "Role 1" });
             context.Roles.Add(new MongoIdentityRole { Id = "rid2", Name = "Role 2" });
@@ -23,7 +23,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests
 
             await context.SaveChangesAsync();
 
-            var user = TestUser.First;
+            var user = MongoTestUser.First;
             user.Roles.Add("rid1");
             user.Roles.Add("rid2");
             await store.CreateAsync(user);
@@ -35,17 +35,17 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests
         [Fact]
         public void ConstructorUsesMongo()
         {
-            var context = new TestContext(GetConnection());
+            var context = new MongoTestContext(GetConnection());
 
             var store = new MongoRoleStore<MongoIdentityRole>(context);
 
-            store.Context.Should().BeOfType<TestContext>();
+            store.Context.Should().BeOfType<MongoTestContext>();
         }
 
         [Fact]
         public void ConvertIdFromStringWithIntReturnsZero()
         {
-            var context = new TestContext(GetConnection());
+            var context = new MongoTestContext(GetConnection());
 
             var store = new MongoRoleStore<MongoIdentityRole<int>, DbContext, int>(context);
 
@@ -56,7 +56,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests
         [Fact]
         public void ConvertIdToStringWithIntReturnsNull()
         {
-            var context = new TestContext(GetConnection());
+            var context = new MongoTestContext(GetConnection());
 
             var store = new MongoRoleStore<MongoIdentityRole<int>, DbContext, int>(context);
 
@@ -67,7 +67,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests
         [Fact]
         public async Task GetNormalizedRoleReturnsCorrect()
         {
-            var context = new TestContext(GetConnection());
+            var context = new MongoTestContext(GetConnection());
             var store = new MongoRoleStore<MongoIdentityRole<int>, DbContext, int>(context);
 
             var role = new MongoIdentityRole<int> { Name = "testrole", NormalizedName = "TESTROLE" };

@@ -8,7 +8,7 @@ using Net9MultiTenant.Models;
 namespace Net9MultiTenant.Pages
 {
     [ExcludeFromMultiTenantResolution]
-    public class NoTenantModel(ILogger<IndexModel> logger) : PageModel
+    public class NoTenantModel() : PageModel
     {
         [ExcludeFromMultiTenantResolution]
         public async Task OnGet()

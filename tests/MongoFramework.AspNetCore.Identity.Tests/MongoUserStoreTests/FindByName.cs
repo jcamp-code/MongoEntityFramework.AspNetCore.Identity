@@ -15,12 +15,12 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
 
         public async Task InitializeAsync()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserStore<MongoTestUser>(context);
 
-            await store.CreateAsync(TestUser.First);
-            await store.CreateAsync(TestUser.Second);
-            await store.CreateAsync(TestUser.Third);
+            await store.CreateAsync(MongoTestUser.First);
+            await store.CreateAsync(MongoTestUser.Second);
+            await store.CreateAsync(MongoTestUser.Third);
         }
 
         public Task DisposeAsync() => Task.CompletedTask;
@@ -28,8 +28,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
         [Fact]
         public async Task FindsCorrectUserWithValidUserName()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserStore<MongoTestUser>(context);
 
             var result = await store.FindByNameAsync("USER NAME2");
 
@@ -41,8 +41,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
         [Fact]
         public async Task FindsTrackedEntityWithValidUserName()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserStore<MongoTestUser>(context);
             var tracked = await store.FindByIdAsync(TestIds.UserId2);
             tracked.CustomData = "updated";
 
@@ -56,8 +56,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
         [Fact]
         public async Task ReturnsNullWithInvalidUserName()
         {
-            var context = new TestContext(GetConnection());
-            var store = new MongoUserStore<TestUser>(context);
+            var context = new MongoTestContext(GetConnection());
+            var store = new MongoUserStore<MongoTestUser>(context);
 
             var result = await store.FindByNameAsync("none");
 

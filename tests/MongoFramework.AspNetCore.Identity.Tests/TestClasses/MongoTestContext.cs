@@ -2,9 +2,9 @@
 
 namespace MongoEntityFramework.AspNetCore.Identity.Tests.TestClasses
 {
-    public class TestContext : DbContext
+    public class MongoTestContext : DbContext
     {
-        public TestContext(DbContextOptions options) : base(options) { }
+        public MongoTestContext(DbContextOptions options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -12,8 +12,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.TestClasses
             this.Database.AutoTransactionBehavior = AutoTransactionBehavior.Never;
         }
 
-        public DbSet<TestUser> TestUsers { get; set; }
-        public DbSet<TestUserInt> TestUsersInt { get; set; }
+        public DbSet<MongoTestUser> TestUsers { get; set; }
+        public DbSet<MongoTestUserInt> TestUsersInt { get; set; }
         public DbSet<MongoIdentityRole> Roles { get; set; }
     }
 }

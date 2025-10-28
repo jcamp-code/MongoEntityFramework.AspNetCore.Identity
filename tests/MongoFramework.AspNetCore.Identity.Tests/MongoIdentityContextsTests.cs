@@ -33,7 +33,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests
 
             await context.SaveChangesAsync();
 
-            var user = TestUser.First;
+            var user = MongoTestUser.First;
             user.Roles.Add(TestIds.RoleId1);
             user.Roles.Add(TestIds.RoleId2);
             await store.CreateAsync(user);
