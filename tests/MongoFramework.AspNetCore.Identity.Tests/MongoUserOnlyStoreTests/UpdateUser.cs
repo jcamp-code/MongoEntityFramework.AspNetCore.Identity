@@ -13,7 +13,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
         public UpdateUser() : base("MongoUserOnlyStore-UpdateUser") { }
 
-        public async Task InitializeAsync()
+        public async ValueTask InitializeAsync()
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
@@ -23,7 +23,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             await store.CreateAsync(MongoTestUser.Third);
         }
 
-        public Task DisposeAsync() => Task.CompletedTask;
+        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 
         [Fact]
         public async Task ReturnsSuccess()

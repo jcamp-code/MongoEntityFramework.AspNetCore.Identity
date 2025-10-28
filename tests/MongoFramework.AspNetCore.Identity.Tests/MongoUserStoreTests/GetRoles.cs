@@ -14,7 +14,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
         public GetRoles() : base("MongoUserStore-GetRoles") { }
 
-        public async Task InitializeAsync()
+        public async ValueTask InitializeAsync()
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserStore<MongoTestUser>(context);
@@ -32,7 +32,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
         }
 
-        public Task DisposeAsync() => Task.CompletedTask;
+        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 
         [Fact]
         public async Task GetRolesWithUser()

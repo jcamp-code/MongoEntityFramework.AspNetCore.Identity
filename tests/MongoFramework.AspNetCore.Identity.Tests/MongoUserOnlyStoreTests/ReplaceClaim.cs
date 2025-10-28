@@ -14,7 +14,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
         public ReplaceClaim() : base("MongoUserOnlyStore-ReplaceClaim") { }
 
-        public async Task InitializeAsync()
+        public async ValueTask InitializeAsync()
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
@@ -31,7 +31,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
         }
 
-        public Task DisposeAsync() => Task.CompletedTask;
+        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 
         [Fact]
         public async Task ReplaceUsersClaim()

@@ -14,7 +14,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
         public SetToken() : base("MongoUserOnlyStore-SetToken") { }
 
-        public async Task InitializeAsync()
+        public async ValueTask InitializeAsync()
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
@@ -22,7 +22,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             await store.CreateAsync(MongoTestUser.First);
         }
 
-        public Task DisposeAsync() => Task.CompletedTask;
+        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 
         [Fact]
         public async Task UpdatesUserWithValidData()

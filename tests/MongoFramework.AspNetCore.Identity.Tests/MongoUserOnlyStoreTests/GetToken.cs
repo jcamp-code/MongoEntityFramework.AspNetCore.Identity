@@ -14,7 +14,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
         public GetToken() : base("MongoUserOnlyStore-GetToken") { }
 
-        public async Task InitializeAsync()
+        public async ValueTask InitializeAsync()
         {
 
             var context = new MongoTestContext(GetConnection());
@@ -27,7 +27,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             await store.UpdateAsync(user);
         }
 
-        public Task DisposeAsync() => Task.CompletedTask;
+        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 
         [Fact]
         public async Task RetrieveLoginsFromUser()

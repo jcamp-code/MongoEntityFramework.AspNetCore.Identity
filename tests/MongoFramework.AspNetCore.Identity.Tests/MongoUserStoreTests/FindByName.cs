@@ -13,7 +13,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
 
         public FindByName() : base("MongoUserStore-FindByName") { }
 
-        public async Task InitializeAsync()
+        public async ValueTask InitializeAsync()
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserStore<MongoTestUser>(context);
@@ -23,7 +23,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
             await store.CreateAsync(MongoTestUser.Third);
         }
 
-        public Task DisposeAsync() => Task.CompletedTask;
+        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 
         [Fact]
         public async Task FindsCorrectUserWithValidUserName()
