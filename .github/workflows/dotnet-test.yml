@@ -25,8 +25,7 @@ jobs:
       - name: Setup DotNet ✨
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: | 
-            8.0.x
+          dotnet-version: |
             9.0.x
 
       - name: Install dependencies 📦️
@@ -36,4 +35,4 @@ jobs:
         run: dotnet build --no-restore -c Release
 
       - name: Test ✅
-        run: dotnet test --no-restore --no-build --verbosity normal
+        run: dotnet test --verbosity normal
