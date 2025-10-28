@@ -28,8 +28,9 @@ This repository provides ASP.NET Core Identity providers for MongoDB.EntityFrame
 /tests
   /MongoFramework.AspNetCore.Identity.Tests - xUnit test project
 /examples
+  /Net6Example - Sample .NET 6.0 web application
   /Net9Sample - Sample .NET 9.0 web application
-/Net9MultiTenant - Multi-tenant example application
+/Net9MultiTenant - Multi-tenant example application (at root, but grouped with examples in .sln)
 ```
 
 ## Build and Test Commands
