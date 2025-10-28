@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-Net9MultiTenant-93a65b75-e000-4ba2-a7b8-3752a453ef0e</UserSecretsId>
+	  <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
