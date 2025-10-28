@@ -11,7 +11,7 @@ namespace Net9MultiTenant.Pages
     public class NoTenantModel() : PageModel
     {
         [ExcludeFromMultiTenantResolution]
-        public async Task OnGet()
+        public void OnGet()
         {
 
         }

@@ -13,7 +13,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
         public UpdateUser() : base("MongoUserOnlyStore-UpdateUser") { }
 
-        public async Task InitializeAsync()
+        public async ValueTask InitializeAsync()
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
@@ -23,17 +23,17 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             await store.CreateAsync(MongoTestUser.Third);
         }
 
-        public Task DisposeAsync() => Task.CompletedTask;
+        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 
         [Fact]
         public async Task ReturnsSuccess()
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
-            var user = await store.FindByIdAsync(TestIds.UserId1);
+            var user = await store.FindByIdAsync(TestIds.UserId1, TestContext.Current.CancellationToken);
 
             user.CustomData = "new-data";
-            var result = await store.UpdateAsync(user);
+            var result = await store.UpdateAsync(user, TestContext.Current.CancellationToken);
 
             result.Should().Be(IdentityResult.Success);
         }
@@ -44,10 +44,10 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
-            var user = await store.FindByIdAsync(TestIds.UserId1);
+            var user = await store.FindByIdAsync(TestIds.UserId1, TestContext.Current.CancellationToken);
 
             user.CustomData = "new-data";
-            await store.UpdateAsync(user);
+            await store.UpdateAsync(user, TestContext.Current.CancellationToken);
 
             context.TestUsers.FirstOrDefault()?.CustomData.Should().Be("new-data");
         }

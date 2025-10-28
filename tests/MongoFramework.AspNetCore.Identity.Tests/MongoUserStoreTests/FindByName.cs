@@ -13,7 +13,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
 
         public FindByName() : base("MongoUserStore-FindByName") { }
 
-        public async Task InitializeAsync()
+        public async ValueTask InitializeAsync()
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserStore<MongoTestUser>(context);
@@ -23,7 +23,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
             await store.CreateAsync(MongoTestUser.Third);
         }
 
-        public Task DisposeAsync() => Task.CompletedTask;
+        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 
         [Fact]
         public async Task FindsCorrectUserWithValidUserName()
@@ -31,7 +31,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserStore<MongoTestUser>(context);
 
-            var result = await store.FindByNameAsync("USER NAME2");
+            var result = await store.FindByNameAsync("USER NAME2", TestContext.Current.CancellationToken);
 
             result.Should().NotBeNull();
             result.UserName.Should().Be("User Name2");
@@ -43,10 +43,10 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserStore<MongoTestUser>(context);
-            var tracked = await store.FindByIdAsync(TestIds.UserId2);
+            var tracked = await store.FindByIdAsync(TestIds.UserId2, TestContext.Current.CancellationToken);
             tracked.CustomData = "updated";
 
-            var result = await store.FindByNameAsync("USER NAME2");
+            var result = await store.FindByNameAsync("USER NAME2", TestContext.Current.CancellationToken);
 
             result.Should().BeSameAs(tracked);
             result.CustomData.Should().Be("updated");
@@ -59,7 +59,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserStoreTests
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserStore<MongoTestUser>(context);
 
-            var result = await store.FindByNameAsync("none");
+            var result = await store.FindByNameAsync("none", TestContext.Current.CancellationToken);
 
             result.Should().BeNull();
         }

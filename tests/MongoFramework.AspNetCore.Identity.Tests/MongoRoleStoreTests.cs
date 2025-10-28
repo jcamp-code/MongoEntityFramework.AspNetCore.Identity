@@ -12,7 +12,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests
 
         public MongoRoleStoreTests() : base("MongoRoleStore") { }
 
-        public async Task InitializeAsync()
+        public async ValueTask InitializeAsync()
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserStore<MongoTestUser>(context);
@@ -30,7 +30,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests
 
         }
 
-        public Task DisposeAsync() => Task.CompletedTask;
+        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 
         [Fact]
         public void ConstructorUsesMongo()
@@ -71,7 +71,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests
             var store = new MongoRoleStore<MongoIdentityRole<int>, DbContext, int>(context);
 
             var role = new MongoIdentityRole<int> { Name = "testrole", NormalizedName = "TESTROLE" };
-            var name = await store.GetNormalizedRoleNameAsync(role);
+            var name = await store.GetNormalizedRoleNameAsync(role, TestContext.Current.CancellationToken);
 
             name.Should().Be("TESTROLE");
         }

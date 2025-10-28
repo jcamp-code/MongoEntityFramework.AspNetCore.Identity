@@ -25,7 +25,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
         public FindByLogin() : base("MongoUserOnlyStore-FindByLogin") { }
 
-        public async Task InitializeAsync()
+        public async ValueTask InitializeAsync()
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
@@ -44,7 +44,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
         }
 
-        public Task DisposeAsync() => Task.CompletedTask;
+        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 
         [Fact]
         public async Task GetsCorrectUserFromLogin()
@@ -52,7 +52,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
-            var user = await store.FindByLoginAsync("provider3", "provider-key");
+            var user = await store.FindByLoginAsync("provider3", "provider-key", TestContext.Current.CancellationToken);
 
             user.Should().NotBeNull();
             user.Id.Should().Be(TestIds.UserId2);
@@ -77,7 +77,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
-            var user = await store.FindByLoginAsync("provider5", "provider-key");
+            var user = await store.FindByLoginAsync("provider5", "provider-key", TestContext.Current.CancellationToken);
 
             user.Should().BeNull();
         }
@@ -88,7 +88,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
-            var user = await store.FindByLoginAsync(null, "provider-key");
+            var user = await store.FindByLoginAsync(null, "provider-key", TestContext.Current.CancellationToken);
 
             user.Should().BeNull();
         }

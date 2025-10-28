@@ -14,7 +14,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
         public AddClaims() : base("MongoUserOnlyStore-AddClaims") { }
 
-        public async Task InitializeAsync()
+        public async ValueTask InitializeAsync()
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
@@ -22,21 +22,21 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             await store.CreateAsync(MongoTestUser.First);
         }
 
-        public Task DisposeAsync() => Task.CompletedTask;
+        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 
         [Fact]
         public async Task UpdatesUser()
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
-            var user = await store.FindByIdAsync(TestIds.UserId1);
+            var user = await store.FindByIdAsync(TestIds.UserId1, TestContext.Current.CancellationToken);
 
             await store.AddClaimsAsync(user,
                 new[]
                 {
                     new Claim("type","value"),
                     new Claim("type2", "value2")
-                });
+                }, TestContext.Current.CancellationToken);
 
             user.Claims.Count.Should().Be(2);
             user.Claims[0].ClaimType.Should().Be("type");
@@ -47,20 +47,20 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
-            var user = await store.FindByIdAsync(TestIds.UserId1);
+            var user = await store.FindByIdAsync(TestIds.UserId1, TestContext.Current.CancellationToken);
 
             await store.AddClaimsAsync(user,
                 new[]
                 {
                     new Claim("type","value"),
                     new Claim("type2", "value2")
-                });
+                }, TestContext.Current.CancellationToken);
 
-            await store.UpdateAsync(user);
+            await store.UpdateAsync(user, TestContext.Current.CancellationToken);
 
             context = new MongoTestContext(GetConnection());
             store = new MongoUserOnlyStore<MongoTestUser>(context);
-            user = await store.FindByIdAsync(TestIds.UserId1);
+            user = await store.FindByIdAsync(TestIds.UserId1, TestContext.Current.CancellationToken);
 
             user.Claims.Count.Should().Be(2);
             user.Claims[0].ClaimType.Should().Be("type");

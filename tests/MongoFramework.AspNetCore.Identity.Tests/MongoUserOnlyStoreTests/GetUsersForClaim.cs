@@ -14,7 +14,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
         public GetUsersForClaim() : base("MongoUserOnlyStore-GetUsersForClaim") { }
 
-        public async Task InitializeAsync()
+        public async ValueTask InitializeAsync()
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
@@ -49,7 +49,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
         }
 
-        public Task DisposeAsync() => Task.CompletedTask;
+        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 
         [Fact]
         public async Task RetrieveUsersForClaim()
@@ -57,8 +57,8 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
-            var users = await store.GetUsersForClaimAsync(new Claim("type", "value"));
-            var users2 = await store.GetUsersForClaimAsync(new Claim("type2", "value2"));
+            var users = await store.GetUsersForClaimAsync(new Claim("type", "value"), TestContext.Current.CancellationToken);
+            var users2 = await store.GetUsersForClaimAsync(new Claim("type2", "value2"), TestContext.Current.CancellationToken);
 
             users.Count.Should().Be(3);
             users2.Count.Should().Be(2);

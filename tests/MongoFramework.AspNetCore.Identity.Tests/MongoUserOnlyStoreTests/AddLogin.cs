@@ -14,7 +14,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
         public AddLogin() : base("MongoUserOnlyStore-AddLogin") { }
 
-        public async Task InitializeAsync()
+        public async ValueTask InitializeAsync()
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
@@ -24,16 +24,16 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             await store.CreateAsync(MongoTestUser.Third);
         }
 
-        public Task DisposeAsync() => Task.CompletedTask;
+        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 
         [Fact]
         public async Task UpdatesUser()
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
-            var user = await store.FindByIdAsync(TestIds.UserId1);
+            var user = await store.FindByIdAsync(TestIds.UserId1, TestContext.Current.CancellationToken);
 
-            await store.AddLoginAsync(user, new UserLoginInfo("provider1", "provider-key", "Login Provider"));
+            await store.AddLoginAsync(user, new UserLoginInfo("provider1", "provider-key", "Login Provider"), TestContext.Current.CancellationToken);
 
             user.Logins.Count.Should().Be(1);
             user.Logins[0].LoginProvider.Should().Be("provider1");
@@ -44,14 +44,14 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
-            var user = await store.FindByIdAsync(TestIds.UserId1);
+            var user = await store.FindByIdAsync(TestIds.UserId1, TestContext.Current.CancellationToken);
 
-            await store.AddLoginAsync(user, new UserLoginInfo("provider1", "provider-key", "Login Provider"));
-            await store.UpdateAsync(user);
+            await store.AddLoginAsync(user, new UserLoginInfo("provider1", "provider-key", "Login Provider"), TestContext.Current.CancellationToken);
+            await store.UpdateAsync(user, TestContext.Current.CancellationToken);
 
             context = new MongoTestContext(GetConnection());
             store = new MongoUserOnlyStore<MongoTestUser>(context);
-            user = await store.FindByIdAsync(TestIds.UserId1);
+            user = await store.FindByIdAsync(TestIds.UserId1, TestContext.Current.CancellationToken);
 
             user.Logins.Count.Should().Be(1);
             user.Logins[0].LoginProvider.Should().Be("provider1");

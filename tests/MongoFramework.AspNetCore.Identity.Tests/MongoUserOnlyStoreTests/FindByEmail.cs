@@ -13,7 +13,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
 
         public FindByEmail() : base("MongoUserOnlyStore-FindByEmail") { }
 
-        public async Task InitializeAsync()
+        public async ValueTask InitializeAsync()
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
@@ -23,7 +23,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             await store.CreateAsync(MongoTestUser.Third);
         }
 
-        public Task DisposeAsync() => Task.CompletedTask;
+        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 
         [Fact]
         public async Task FindsCorrectUserWithValidEmail()
@@ -31,7 +31,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
-            var result = await store.FindByEmailAsync("TEST3@TESTING.COM");
+            var result = await store.FindByEmailAsync("TEST3@TESTING.COM", TestContext.Current.CancellationToken);
 
             result.Should().NotBeNull();
             result.UserName.Should().Be("User Name3");
@@ -42,10 +42,10 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
         {
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
-            var tracked = await store.FindByIdAsync(TestIds.UserId2);
+            var tracked = await store.FindByIdAsync(TestIds.UserId2, TestContext.Current.CancellationToken);
             tracked.CustomData = "updated";
 
-            var result = await store.FindByEmailAsync("TEST2@TESTING.COM");
+            var result = await store.FindByEmailAsync("TEST2@TESTING.COM", TestContext.Current.CancellationToken);
 
             result.Should().BeSameAs(tracked);
             result.CustomData.Should().Be("updated");
@@ -57,7 +57,7 @@ namespace MongoEntityFramework.AspNetCore.Identity.Tests.MongoUserOnlyStoreTests
             var context = new MongoTestContext(GetConnection());
             var store = new MongoUserOnlyStore<MongoTestUser>(context);
 
-            var result = await store.FindByEmailAsync("none");
+            var result = await store.FindByEmailAsync("none", TestContext.Current.CancellationToken);
 
             result.Should().BeNull();
         }
